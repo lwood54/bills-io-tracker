@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import './styles.css';
+	import '../app.css';
 
 	export let data: PageData;
 
