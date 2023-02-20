@@ -1,3 +1,3 @@
 <a href="/bills/log">Log</a>
-<a href="/bills/track">Track</a>
+<a href="/bills/list">List</a>
 <slot />

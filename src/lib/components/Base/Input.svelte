@@ -7,7 +7,7 @@
 
 <label>
 	<slot />
-	<div class="flex-initial w-64">
+	<div>
 		{#if variant === 'password'}
 			<input {name} type="password" bind:value={val} />
 		{:else if variant === 'number'}
@@ -17,3 +17,10 @@
 		{/if}
 	</div>
 </label>
+
+<style>
+	input {
+		color: black;
+		width: 100%;
+	}
+</style>

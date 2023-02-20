@@ -21,7 +21,7 @@
 		<label
 			>Username
 			<div>
-				<input name="username" type="text" bind:value={username} />
+				<input class="text-field" name="username" type="text" bind:value={username} />
 			</div>
 		</label>
 		<label
@@ -35,4 +35,7 @@
 {/if}
 
 <style>
+	.text-field {
+		color: black;
+	}
 </style>

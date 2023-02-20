@@ -22,6 +22,7 @@ export const actions: Actions = {
 				if (PRIVATE_SECRET) {
 					const encrypted = CryptoJS.AES.encrypt(`${user.userId},${user.token}`, PRIVATE_SECRET);
 					const stringForCookie = encrypted.toString();
+					console.log('LOGIN PAGE --> ', { stringForCookie });
 					cookies.set('token', stringForCookie);
 					throw redirect(307, '/');
 				}
