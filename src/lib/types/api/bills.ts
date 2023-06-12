@@ -10,3 +10,20 @@ export type Bill = {
 	updatedAt: Date;
 	userId: string;
 };
+
+export type Category = {
+	id: string;
+	title: string;
+};
+
+export type Log = {
+	id: string;
+	amount: number;
+	scale: Scale;
+	title: string;
+	categoryId: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type Scale = 'ESSENTIAL' | 'NEUTRAL' | 'NON_ESSENTIAL';

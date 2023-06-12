@@ -1,36 +1,45 @@
-import { redirect } from '@sveltejs/kit';
+import type { ServerLoadEvent } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import CryptoJS from 'crypto-js';
 import { PRIVATE_SECRET } from '$env/static/private';
-import { URL } from '$lib/constants/root';
+import { ROOT_URL } from '$lib/constants/root';
+
+export const load = async ({ cookies }: ServerLoadEvent): Promise<{ isLoggedIn: boolean }> => {
+	const token = cookies.get('token');
+	return { isLoggedIn: Boolean(token) };
+};
 
 export const actions: Actions = {
 	login: async ({ fetch, request, cookies }) => {
 		const data = await request.formData();
 		const username = data.get('username') as string;
 		const password = data.get('password') as string;
-		const url = `${URL.BASE}/login`;
-
+		const url = `${ROOT_URL}/login`;
 		if (username && password) {
 			try {
-				const res = await fetch(url, {
+				const result = await fetch(url, {
 					method: 'POST',
 					body: JSON.stringify({ username, password }),
 					headers: { 'Content-type': 'application/json; charset=UTF-8' } // NOTE: won't work without charset
 				});
-				const user = await res.json();
+				const user = await result.json();
+				if (user.error || !user) {
+					return { error: user.error };
+				}
 				if (PRIVATE_SECRET) {
 					const encrypted = CryptoJS.AES.encrypt(`${user.userId},${user.token}`, PRIVATE_SECRET);
 					const stringForCookie = encrypted.toString();
-					console.log('LOGIN PAGE --> ', { stringForCookie });
 					cookies.set('token', stringForCookie);
-					throw redirect(307, '/');
+					return { user };
+					// NOTE: for future reference, redirets inside a try/catch does not allow SvelteKit to handle
+					// so it won't work correctly when used like this. https://kit.svelte.dev/docs/load#redirects
+					// throw redirect(307, '/');
 				}
 			} catch (error) {
 				console.error(error);
+				return { error };
 			}
 		}
-		throw redirect(307, '/');
 	},
 	logout: async ({ cookies }) => {
 		cookies.delete('email');

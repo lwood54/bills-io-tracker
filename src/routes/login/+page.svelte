@@ -1,12 +1,18 @@
 <script lang="ts">
-	import { rootStore } from '$lib/stores/root';
+	import { goto } from '$app/navigation';
+	import type { ActionData, PageData } from './$types';
+	import { browser } from '$app/environment';
 
 	let username: string;
 	let password: string;
+	export let data: PageData;
+	export let form: ActionData;
 
-	const clearStore = () => {
-		$rootStore = {};
-	};
+	if (data.isLoggedIn && browser) {
+		// NOTE: page is on sever before mounting, so need to check for browser to ensure
+		// this is now client-side. https://github.com/sveltejs/kit/discussions/3245
+		goto('/');
+	}
 </script>
 
 <svelte:head>
@@ -14,24 +20,25 @@
 	<meta name="description" content="Login page" />
 </svelte:head>
 
-{#if $rootStore.username}
-	<h1>Welcome back {$rootStore.username}!</h1>
-{:else}
-	<form method="POST" action="?/login">
-		<label
-			>Username
-			<div>
-				<input class="text-field" name="username" type="text" bind:value={username} />
-			</div>
-		</label>
-		<label
-			>Password
-			<div>
-				<input name="password" type="password" bind:value={password} />
-			</div>
-		</label>
-		<button type="submit">Submit</button>
-	</form>
+<form method="POST" action="?/login">
+	<label
+		>Username
+		<div>
+			<input class="text-field" name="username" type="text" bind:value={username} />
+		</div>
+	</label>
+	<label
+		>Password
+		<div>
+			<input name="password" type="password" bind:value={password} />
+		</div>
+	</label>
+	<button type="submit">Submit</button>
+</form>
+<!-- <div>{$rootStore.}</div> -->
+{#if form?.error}
+	<p>{form.error}</p>
+	<a href="/signup">Want to Sign Up?</a>
 {/if}
 
 <style>

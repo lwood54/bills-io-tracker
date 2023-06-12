@@ -1,12 +1,12 @@
 <script lang="ts">
-	import AddBill from '$lib/components/Bills/AddBill.svelte';
+	import CreateBill from './components/CreateBill.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	const bills = data.bills ?? [];
 	let isAddOpen = false;
 
 	const toggleAddBill = () => {
-		console.log('toggling');
 		isAddOpen = !isAddOpen;
 	};
 </script>
@@ -19,15 +19,17 @@
 		<button on:click={toggleAddBill}>+</button>
 	{/if}
 	{#if isAddOpen}
-		<AddBill onClose={toggleAddBill} />
+		<CreateBill onClose={toggleAddBill} />
 	{/if}
-	{#if data.bills}
-		{#each data.bills as bill}
-			<p>{bill.title}</p>
-			<p>payment: {bill.amount}</p>
-			<p>balance: {bill.balance}</p>
+	<div class="flex flex-col gap-2">
+		{#each bills as bill}
+			<div class="border-solid border-2 border-slate-500">
+				<p>{bill.title}</p>
+				<p>payment: {bill.amount}</p>
+				<p>balance: {bill.balance}</p>
+			</div>
 		{/each}
-	{/if}
+	</div>
 </div>
 
 <style>

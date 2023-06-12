@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import { PRIVATE_SECRET } from '$env/static/private';
-import { URL } from '$lib/constants/root';
+import { UrlPaths } from '$lib/constants/root';
 import { getUser } from '$lib/helpers/utils';
 import type { ServerLoadEvent } from '@sveltejs/kit';
 import { error } from '@sveltejs/kit';
@@ -27,11 +27,10 @@ export const actions: Actions = {
 				error: 'not authorized'
 			};
 		}
-		const url = `${URL.BASE}/bills/create`;
 		try {
-			const res = await fetch(url, {
+			const res = await fetch(UrlPaths.bills.create(userId), {
 				method: 'POST',
-				body: JSON.stringify({ amount, balance, dayDue, limit, rate, title, userId }),
+				body: JSON.stringify({ amount, balance, dayDue, limit, rate, title }),
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-type': 'application/json; charset=UTF-8'
@@ -52,9 +51,8 @@ export const load = async ({
 	const publicToken = cookies.get('token');
 	if (publicToken) {
 		const { userId, token } = getUser(publicToken, PRIVATE_SECRET);
-		const url = `${URL.BASE}/bills/user/${userId}`;
 		try {
-			const bills = await fetch(url, {
+			const bills = await fetch(UrlPaths.bills.get.list(userId), {
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-Type': 'application/json'

@@ -1,9 +1,7 @@
-import { redirect, type Cookies } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import CryptoJS from 'crypto-js';
 import { PRIVATE_SECRET } from '$env/static/private';
-import { URL } from '$lib/constants/root';
-import type { User } from '$lib/types/api/user';
+import { ROOT_URL } from '$lib/constants/root';
 
 export const actions: Actions = {
 	default: async ({ fetch, request, cookies }) => {
@@ -13,8 +11,7 @@ export const actions: Actions = {
 		const password = data.get('password') as string;
 		const lastName = data.get('lastname') as string;
 		const firstName = data.get('firstname') as string;
-		const url = `${URL.BASE}/signup`;
-		console.log({ username, email, password, lastName, firstName, url });
+		const url = `${ROOT_URL}/signup`;
 		try {
 			const res = await fetch(url, {
 				method: 'POST',
@@ -34,16 +31,10 @@ export const actions: Actions = {
 				return { user: result };
 			}
 		} catch (error) {
-			console.log('in error', error);
+			console.error('ERROR @singup create user', error);
 			if (error instanceof Error) {
 				return { error: error.message };
 			}
-			console.log(error);
-			// throw Error(error);
-			// const textError = error.text();
-			// return { error };
-			// return { error: e.error };
-			// return { error };
 		}
 	}
 };

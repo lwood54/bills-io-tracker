@@ -4,11 +4,11 @@
 	import { page } from '$app/stores';
 	import './styles.css';
 	import '../app.css';
+	import NavItem from '$lib/components/nav/NavItem.svelte';
 
 	export let data: PageData;
-
-	$: path = $page.route.id === '/login' ? '?src=login' : '';
-
+	$: pageRoute = $page.route.id;
+	$: logoutQueryParam = $page.route.id === '/login' ? '?src=login' : '';
 	$: {
 		$rootStore = { email: data.userInfo?.email, username: data.userInfo?.username };
 	}
@@ -18,37 +18,35 @@
 	};
 </script>
 
-<div class="nav-container">
-	<div class="nav-group-1">
-		<a href="/">Home</a>
-		<a href="/bills">Bills</a>
+<div class="flex bg-slate-800 px-4 py-2 justify-between">
+	<div class="flex gap-4">
+		<NavItem isActive={pageRoute === '/'}>
+			<a href="/">Home</a>
+		</NavItem>
+		{#if $rootStore.username}
+			<NavItem isActive={Boolean(pageRoute?.includes('/bills'))}>
+				<a href="/bills">Bills</a>
+			</NavItem>
+		{/if}
 	</div>
 	<div class="nav-group-2">
 		{#if $rootStore.username}
-			<a href={`/logout${path}`} on:click={clearStore}>logout</a>
+			<NavItem>
+				<a
+					data-sveltekit-preload-data="tap"
+					href={`/logout${logoutQueryParam}`}
+					on:click={clearStore}>Logout</a
+				>
+			</NavItem>
+		{:else if $page.route.id === '/login'}
+			<NavItem>
+				<a href="/signup">Sign Up</a>
+			</NavItem>
 		{:else}
-			<a href="/login">Login</a>
+			<NavItem>
+				<a href="/login">Login</a>
+			</NavItem>
 		{/if}
 	</div>
 </div>
-
 <slot />
-
-<style>
-	.nav-container {
-		display: flex;
-		background-color: var(--color-bg-0);
-		justify-content: space-between;
-	}
-	.nav-group-1,
-	.nav-group-2 {
-		padding: var(--spacing-m);
-	}
-	.nav-group-1:hover a,
-	.nav-group-2:hover a {
-		background-color: white;
-	}
-	a {
-		margin: 0;
-	}
-</style>

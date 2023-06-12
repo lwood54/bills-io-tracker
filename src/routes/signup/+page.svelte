@@ -3,9 +3,6 @@
 
 	export let form: ActionData;
 
-	$: {
-		console.log('user', form?.user);
-	}
 	let username: string;
 	let password: string;
 	let email: string;
@@ -22,31 +19,31 @@
 	<label
 		>Username
 		<div>
-			<input name="username" type="text" bind:value={username} />
+			<input class="text-slate-800" name="username" type="text" bind:value={username} />
 		</div>
 	</label>
 	<label
 		>Email
 		<div>
-			<input name="email" type="email" bind:value={email} />
+			<input class="text-slate-800" name="email" type="email" bind:value={email} />
 		</div>
 	</label>
 	<label
 		>First Name
 		<div>
-			<input name="firstname" type="text" bind:value={firstName} />
+			<input class="text-slate-800" name="firstname" type="text" bind:value={firstName} />
 		</div>
 	</label>
 	<label
 		>Last Name
 		<div>
-			<input name="lastname" type="text" bind:value={lastName} />
+			<input class="text-slate-800" name="lastname" type="text" bind:value={lastName} />
 		</div>
 	</label>
 	<label
 		>Password
 		<div>
-			<input name="password" type="password" bind:value={password} />
+			<input class="text-slate-800" name="password" type="password" bind:value={password} />
 		</div>
 	</label>
 	<button type="submit">Sign Me Up!</button>
