@@ -20,32 +20,20 @@
 
 <div class="flex bg-slate-800 px-4 py-2 justify-between">
 	<div class="flex gap-4">
-		<NavItem isActive={pageRoute === '/'}>
-			<a href="/">Home</a>
-		</NavItem>
+		<NavItem href="/" isActive={pageRoute === '/'}>Home</NavItem>
 		{#if $rootStore.username}
-			<NavItem isActive={Boolean(pageRoute?.includes('/bills'))}>
-				<a href="/bills">Bills</a>
-			</NavItem>
+			<NavItem href="/bills" isActive={Boolean(pageRoute?.includes('/bills'))}>Bills</NavItem>
 		{/if}
 	</div>
 	<div class="nav-group-2">
 		{#if $rootStore.username}
-			<NavItem>
-				<a
-					data-sveltekit-preload-data="tap"
-					href={`/logout${logoutQueryParam}`}
-					on:click={clearStore}>Logout</a
-				>
-			</NavItem>
+			<NavItem onClick={clearStore} href={`/logout${logoutQueryParam}`} preLoadAction="tap"
+				>Logout</NavItem
+			>
 		{:else if $page.route.id === '/login'}
-			<NavItem>
-				<a href="/signup">Sign Up</a>
-			</NavItem>
+			<NavItem href="/signup">Sign Up</NavItem>
 		{:else}
-			<NavItem>
-				<a href="/login">Login</a>
-			</NavItem>
+			<NavItem href="/login">Login</NavItem>
 		{/if}
 	</div>
 </div>
