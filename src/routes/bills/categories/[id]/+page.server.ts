@@ -14,7 +14,7 @@ export const load = async ({
 		const { token } = getUser(publicToken, PRIVATE_SECRET);
 		const url = `${ROOT_URL}/categories/${id}`;
 		try {
-			const category = await fetch(url, {
+			const res = await fetch(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-Type': 'application/json'
@@ -23,7 +23,11 @@ export const load = async ({
 			// NOTE: learned can only await once. So awaiting and logging
 			// and then awaiting and returning results in category.bodyUsed = true
 			// so throwing an error 'Body unusable...'
-			return { category: await category.json() };
+			if (res.ok) {
+				return { category: await res.json() };
+			} else {
+				return await res.json();
+			}
 		} catch (err) {
 			console.error('ERROR error fetching category details', err);
 			throw error(500, 'error fetching category details');

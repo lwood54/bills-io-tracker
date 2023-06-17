@@ -17,14 +17,14 @@ export const actions: Actions = {
 		const url = `${ROOT_URL}/login`;
 		if (username && password) {
 			try {
-				const result = await fetch(url, {
+				const response = await fetch(url, {
 					method: 'POST',
 					body: JSON.stringify({ username, password }),
 					headers: { 'Content-type': 'application/json; charset=UTF-8' } // NOTE: won't work without charset
 				});
-				const user = await result.json();
+				const user = await response.json();
 				if (user.error || !user) {
-					return { error: user.error };
+					return { error: user.error ?? 'error fetching user' };
 				}
 				if (PRIVATE_SECRET) {
 					const encrypted = CryptoJS.AES.encrypt(`${user.userId},${user.token}`, PRIVATE_SECRET);
@@ -33,7 +33,6 @@ export const actions: Actions = {
 					return { user };
 					// NOTE: for future reference, redirets inside a try/catch does not allow SvelteKit to handle
 					// so it won't work correctly when used like this. https://kit.svelte.dev/docs/load#redirects
-					// throw redirect(307, '/');
 				}
 			} catch (error) {
 				console.error(error);

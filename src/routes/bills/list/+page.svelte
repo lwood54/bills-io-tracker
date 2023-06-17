@@ -1,11 +1,16 @@
 <script lang="ts">
 	import CreateBill from './components/CreateBill.svelte';
 	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
-	const bills = data.bills ?? [];
 	let isAddOpen = false;
 
+	$: bills = data.bills ?? [];
+	$: if (data.error && browser) {
+		goto(`/error-page?msg=${data.error}`);
+	}
 	const toggleAddBill = () => {
 		isAddOpen = !isAddOpen;
 	};

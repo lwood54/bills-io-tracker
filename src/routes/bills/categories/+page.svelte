@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
-
 	export let data: PageData;
-	const categories = data.categories ?? [];
+
+	$: categories = data.categories ?? [];
+	$: if (data.error && browser) {
+		goto(`/error-page?msg=${data.error}`);
+	}
 </script>
 
 <h1>Categories</h1>

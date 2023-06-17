@@ -2,9 +2,14 @@
 	import { DateInput, DatePicker } from 'date-picker-svelte';
 	import Card from '$lib/components/Elements/Card.svelte';
 	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
-	const logs = data.logs ?? [];
+	$: logs = data.logs ?? [];
+	$: if (data.error && browser) {
+		goto(`/error-page?msg=${data.error}`);
+	}
 
 	let date = new Date();
 </script>

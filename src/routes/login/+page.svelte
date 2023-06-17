@@ -2,13 +2,14 @@
 	import { goto } from '$app/navigation';
 	import type { ActionData, PageData } from './$types';
 	import { browser } from '$app/environment';
+	import { rootStore } from '$lib/stores/root';
 
 	let username: string;
 	let password: string;
 	export let data: PageData;
 	export let form: ActionData;
 
-	if (data.isLoggedIn && browser) {
+	$: if (data.isLoggedIn && browser && $rootStore.username) {
 		// NOTE: page is on sever before mounting, so need to check for browser to ensure
 		// this is now client-side. https://github.com/sveltejs/kit/discussions/3245
 		goto('/');
