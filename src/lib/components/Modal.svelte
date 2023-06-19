@@ -9,7 +9,7 @@
 <div
 	on:click={onClose}
 	on:keydown={onClose}
-	class="fixed top-0 left-0 w-full h-full bg-slate-600/75"
+	class="fixed top-0 left-0 w-full h-full bg-slate-600/75 z-50"
 	id="background"
 >
 	<div transition:slide class="flex flex-col justify-center items-center h-full">
