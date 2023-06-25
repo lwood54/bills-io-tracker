@@ -2,7 +2,7 @@
 	export let type: undefined | 'button' | 'submit' = 'submit';
 	export let variant: undefined | 'negative' | 'positive' = 'positive';
 	export let formName = '';
-	const buttonBase = 'rounded-full px-3 py-1';
+	const buttonBase = 'rounded w-full px-3 py-1';
 	const negative = 'bg-red-500 hover:bg-red-600 focus:bg-red-800';
 	const positive = 'bg-green-500 hover:bg-green-600 focus:bg-green-800';
 	const variantClass = variant === 'negative' ? negative : positive;

@@ -14,6 +14,7 @@ specifiers:
   axios: ^1.2.1
   bcrypt: ^5.1.0
   crypto-js: ^4.1.1
+  date-fns: ^2.30.0
   date-picker-svelte: ^2.4.3
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
@@ -35,6 +36,7 @@ dependencies:
   axios: 1.2.1
   bcrypt: 5.1.0
   crypto-js: 4.1.1
+  date-fns: 2.30.0
 
 devDependencies:
   '@fontsource/fira-mono': 4.5.10
@@ -74,6 +76,13 @@ packages:
   /@antfu/utils/0.7.4:
     resolution: {integrity: sha512-qe8Nmh9rYI/HIspLSTwtbMFPj6dISG6+dJnOguTlPNXtCvS2uezdxscVBb7/3DrmNbQK49TDqpkSQ1chbRGdpQ==}
     dev: true
+
+  /@babel/runtime/7.22.5:
+    resolution: {integrity: sha512-ecjvYlnAaZ/KVneE/OdKYBYfgXV3Ptu6zQWmgEF7vwKhQnvVS6bjMD2XYgj+SNvQ1GfK/pjgokfPkC/2CO8CuA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: false
 
   /@esbuild/android-arm/0.16.10:
     resolution: {integrity: sha512-RmJjQTRrO6VwUWDrzTBLmV4OJZTarYsiepLGlF2rYTVB701hSorPywPGvP6d8HCuuRibyXa5JX4s3jN2kHEtjQ==}
@@ -950,6 +959,13 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
     dev: true
+
+  /date-fns/2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.22.5
+    dev: false
 
   /date-picker-svelte/2.4.3_svelte@3.55.0:
     resolution: {integrity: sha512-aYQzLNc7MfMWYc5InrCQv26geewkTeLg0x4R5Rr3H4YJS1i1VucQxOIvObjaJ64ylCBwVnEpQeO5iBq3semn1A==}
@@ -2062,6 +2078,10 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
+
+  /regenerator-runtime/0.13.11:
+    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
+    dev: false
 
   /regexpp/3.2.0:
     resolution: {integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==}
