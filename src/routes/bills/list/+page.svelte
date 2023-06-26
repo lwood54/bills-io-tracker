@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import Icon from '@iconify/svelte';
 
 	export let data: PageData;
 
@@ -10,6 +11,7 @@
 	$: if (data.error && browser) {
 		goto(`/error-page?msg=${data.error}`);
 	}
+	const handleDelete = () => {};
 </script>
 
 <div class="flex flex-col p-2 sm:p-4 items-center relative">
@@ -18,21 +20,10 @@
 		{#each bills as bill}
 			<div class="flex w-full sm:w-fit">
 				<div
-					on:click={() => goto(`/bills/${bill.id}`)}
-					on:keydown={() => goto(`/bills/${bill.id}`)}
+					on:click={() => goto(`/bills/bill/view/${bill.id}`)}
+					on:keydown={() => goto(`/bills/bill/view/${bill.id}`)}
 					class="w-full p-2 sm:w-[600px] border-solid border-2 border-slate-500 hover:bg-slate-600 hover:cursor-pointer"
 				>
-					<!-- <div class="relative">
-						<div class="absolute flex w-full group">
-							<h1 class="w-full text-lg truncate">{bill.title}</h1>
-							<button
-								class="invisible w-25 h-25 group-hover:visible p-1 rounded-full bg-gray-500 text-red-800 hover:text-red-900 active:text-red-600"
-								on:click|stopPropagation={handleDelete}
-							>
-								<Icon icon="mdi:delete" width="25" height="25" />
-							</button>
-						</div>
-					</div> -->
 					<div>
 						<h1 class="w-full text-lg">{bill.title}</h1>
 					</div>
@@ -46,6 +37,20 @@
 							Last updated: {format(new Date(bill.updatedAt), 'mm/dd/yy h:mm aaa')}
 						</p>
 					</div>
+				</div>
+				<div>
+					<button
+						class="w-25 h-25 p-1 rounded-full bg-gray-500 text-red-800 hover:text-red-900 active:text-red-600"
+						on:click|stopPropagation={handleDelete}
+					>
+						<Icon icon="mdi:delete" width="25" height="25" />
+					</button>
+					<button
+						class="w-25 h-25 p-1 rounded-full bg-gray-500 text-blue-800 hover:text-red-900 active:text-red-600"
+						on:click|stopPropagation={() => goto(`/bills/bill/edit/${bill.id}`)}
+					>
+						<Icon icon="mdi:pencil-outline" width="25" height="25" />
+					</button>
 				</div>
 			</div>
 		{/each}
