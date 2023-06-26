@@ -8,7 +8,8 @@
 	const addItem = () => {
 		const root = pageRoute?.split('/')[2];
 		if (root) {
-			goto(`/bills/${root}/add`);
+			const pathChunk = root === 'list' ? 'bill' : root;
+			goto(`/bills/${pathChunk}/add`);
 		}
 	};
 </script>
