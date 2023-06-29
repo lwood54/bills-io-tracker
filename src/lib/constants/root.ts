@@ -1,7 +1,6 @@
 const PRODUCTION_URL = 'https://bills-io.up.railway.app';
 const DEV_URL = 'http://localhost:8080';
-// export const ROOT_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : DEV_URL;
-export const ROOT_URL = PRODUCTION_URL;
+export const ROOT_URL = process.env.NODE_ENV === 'production' ? PRODUCTION_URL : DEV_URL;
 
 export const UrlPaths = {
 	bills: {
