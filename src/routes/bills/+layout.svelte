@@ -14,21 +14,23 @@
 	};
 </script>
 
-<div class="flex items-center justify-between bg-slate-600 px-4 py-2 gap-4">
+<div class="flex items-center h-16 justify-between bg-slate-600 px-4 py-2 gap-4">
 	<div class="flex">
-		<NavItem href="/bills/logs" isActive={pageRoute === '/bills/logs'}>Logs</NavItem>
+		<NavItem href="/bills/logs" isActive={pageRoute === '/bills/logs'}>Spending Logs</NavItem>
 		<NavItem href="/bills/categories" isActive={pageRoute === '/bills/categories'}
-			>Categories</NavItem
+			>Speding Categories</NavItem
 		>
-		<NavItem href="/bills/list" isActive={pageRoute === '/bills/list'}>List</NavItem>
+		<NavItem href="/bills/list" isActive={pageRoute === '/bills/list'}>Bills List</NavItem>
 	</div>
-	<button class="p-2" on:click={addItem}>
-		<Icon
-			class="text-green-400 hover:text-green-600 active:text-green-200"
-			icon="mdi:plus-circle-outline"
-			width="45"
-			height="45"
-		/>
-	</button>
+	{#if pageRoute !== '/bills'}
+		<button class="p-2" on:click={addItem}>
+			<Icon
+				class="text-green-400 hover:text-green-600 active:text-green-200"
+				icon="mdi:plus-circle-outline"
+				width="45"
+				height="45"
+			/>
+		</button>
+	{/if}
 </div>
 <slot />

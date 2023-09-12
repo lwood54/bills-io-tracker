@@ -3,9 +3,12 @@
 	import type { ActionData, PageData } from './$types';
 	import { browser } from '$app/environment';
 	import { rootStore } from '$lib/stores/root';
+	import { Input } from '$lib/components/Elements';
+	import { FormContainer } from '$lib/components/Common';
 
 	let username: string;
 	let password: string;
+	let isSubmitting = false;
 	export let data: PageData;
 	export let form: ActionData;
 
@@ -21,29 +24,24 @@
 	<meta name="description" content="Login page" />
 </svelte:head>
 
-<form method="POST" action="?/login">
-	<label
-		>Username
-		<div>
-			<input class="text-field" name="username" type="text" bind:value={username} />
-		</div>
-	</label>
-	<label
-		>Password
-		<div>
-			<input name="password" type="password" bind:value={password} />
-		</div>
-	</label>
-	<button type="submit">Submit</button>
-</form>
-<!-- <div>{$rootStore.}</div> -->
+<FormContainer
+	action="?/login"
+	method="POST"
+	formName="login"
+	title="Login"
+	buttonLabel="Submit"
+	buttonType="submit"
+	{isSubmitting}
+	submittingCallback={(isFormSubmitting) => {
+		isSubmitting = isFormSubmitting;
+	}}
+>
+	<Input name="username" val={username}>Username</Input>
+	<Input name="password" variant="password" val={password}>Password</Input>
+</FormContainer>
+
 {#if form?.error}
 	<p>{form.error}</p>
 	<a href="/signup">Want to Sign Up?</a>
+	<a href="/reset">Want to Reset Password?</a>
 {/if}
-
-<style>
-	.text-field {
-		color: black;
-	}
-</style>

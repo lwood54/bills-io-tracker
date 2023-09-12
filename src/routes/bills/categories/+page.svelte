@@ -10,6 +10,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Categories List</title>
+</svelte:head>
+
 <h1>Categories</h1>
 
 <div class="flex flex-col gap-2">

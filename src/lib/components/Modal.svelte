@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { Button } from './Elements';
+	import Spinner from './Elements/Spinner.svelte';
 	export let onClose: () => void;
 	export let title = '';
 	export let formName = '';
+	export let isSubmitting: boolean | undefined = false;
 </script>
 
 <div
@@ -16,11 +18,17 @@
 		<div
 			on:click={(e) => e.stopPropagation()}
 			on:keydown={(e) => e.stopPropagation()}
-			class="flex flex-col justify-center w-96 bg-slate-800 p-4"
+			class="flex relative flex-col justify-center w-96 bg-slate-800 p-4"
 		>
 			<h1 class="w-full text-center text-lg">{title}</h1>
-			<div class="flex justify-end w-full">
-				<button on:click|stopPropagation={onClose}>X</button>
+			<div class="flex absolute top-0 right-0 justify-end w-full">
+				<button
+					on:click={(e) => {
+						e.preventDefault();
+						onClose();
+					}}
+					class="p-4">X</button
+				>
 			</div>
 			<slot />
 			<div class="flex justify-end w-full gap-4">
@@ -31,7 +39,13 @@
 					}}
 					variant="negative">Cancel</Button
 				>
-				<Button {formName} type="submit">Submit</Button>
+				<Button isDisabled={isSubmitting} {formName} type="submit">
+					{#if isSubmitting}
+						<Spinner variant="button" scale="xs" />
+					{:else}
+						Submit
+					{/if}
+				</Button>
 			</div>
 		</div>
 	</div>

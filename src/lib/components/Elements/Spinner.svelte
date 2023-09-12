@@ -1,12 +1,30 @@
 <script lang="ts">
-	export let scale: 's' | 'm' | 'l' = 's';
-	const dimensions = scale === 's' ? 'w-8 h-8' : scale === 'm' ? 'w-16 h-16' : 'w-24 h-24';
+	export let scale: 'xs' | 's' | 'm' | 'l' = 's';
+	export let variant: 'button' | 'page' = 'page';
+	const getDimensions = (scale: 'xs' | 's' | 'm' | 'l') => {
+		switch (scale) {
+			case 'xs':
+				return 'w-4 h-4';
+			case 's':
+				return 'w-8 h-8';
+			case 'm':
+				return 'w-16 h-16';
+			default:
+				return 'w-24 h-24';
+		}
+	};
+	const containerDimensions =
+		variant === 'button'
+			? 'flex w-full justify-center items-center'
+			: 'flex w-full h-96 justify-center items-center';
 </script>
 
-<div role="status" class="flex w-full h-96 justify-center items-center">
+<div role="status" class={containerDimensions}>
 	<svg
 		aria-hidden="true"
-		class={`inline ${dimensions} mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-green-500`}
+		class={`inline ${getDimensions(
+			scale
+		)} mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-green-500`}
 		viewBox="0 0 100 101"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"

@@ -4,24 +4,49 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import Icon from '@iconify/svelte';
+	import { IconButton } from '$lib/components/Elements';
+	import RemoveModal from './components/RemoveModal.svelte';
+	import type { Bill } from '$lib/types/api/bills';
 
 	export let data: PageData;
+	let isOpen = false;
+	let selectedBill: Bill | undefined = undefined;
 
 	$: bills = data.bills ?? [];
 	$: if (data.error && browser) {
 		goto(`/error-page?msg=${data.error}`);
 	}
-	const handleDelete = () => {};
+
+	const handleDelete = () => {
+		console.info('deleting with userId: ', data.userInfo?.userId);
+		// open delete modal
+	};
+
+	const handleClose = () => {
+		isOpen = false;
+		selectedBill = undefined;
+	};
 </script>
 
+<svelte:head>
+	<title>Bills List</title>
+</svelte:head>
+
 <div class="flex flex-col p-2 sm:p-4 items-center relative">
+	<RemoveModal bill={selectedBill} {isOpen} onClose={() => (isOpen = false)} />
 	<h1 class="text-2xl mb-4">Bills</h1>
 	<div class="flex flex-col w-full sm:flex-row sm:justify-center sm:flex-wrap gap-2 items-center">
 		{#each bills as bill}
-			<div class="flex w-full sm:w-fit">
+			<div class="flex w-full sm:w-fit relative">
 				<div
-					on:click={() => goto(`/bills/bill/view/${bill.id}`)}
-					on:keydown={() => goto(`/bills/bill/view/${bill.id}`)}
+					on:click={() => goto(`/bills/bill/edit/${bill.id}`)}
+					on:keydown={(key) => {
+						if (key.key === 'Enter') {
+							goto(`/bills/bill/edit/${bill.id}`);
+						}
+					}}
+					role="button"
+					tabIndex="0"
 					class="w-full p-2 sm:w-[600px] border-solid border-2 border-slate-500 hover:bg-slate-600 hover:cursor-pointer"
 				>
 					<div>
@@ -37,20 +62,16 @@
 							Last updated: {format(new Date(bill.updatedAt), 'mm/dd/yy h:mm aaa')}
 						</p>
 					</div>
-				</div>
-				<div>
-					<button
-						class="w-25 h-25 p-1 rounded-full bg-gray-500 text-red-800 hover:text-red-900 active:text-red-600"
-						on:click|stopPropagation={handleDelete}
-					>
-						<Icon icon="mdi:delete" width="25" height="25" />
-					</button>
-					<button
-						class="w-25 h-25 p-1 rounded-full bg-gray-500 text-blue-800 hover:text-red-900 active:text-red-600"
-						on:click|stopPropagation={() => goto(`/bills/bill/edit/${bill.id}`)}
-					>
-						<Icon icon="mdi:pencil-outline" width="25" height="25" />
-					</button>
+					<div class="absolute top-0 right-0 p-2">
+						<IconButton
+							onClick={() => {
+								isOpen = true;
+								selectedBill = bill;
+							}}
+						>
+							<Icon icon="mdi:delete" width="25" height="25" />
+						</IconButton>
+					</div>
 				</div>
 			</div>
 		{/each}

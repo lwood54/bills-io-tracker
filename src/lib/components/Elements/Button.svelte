@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
+	export let isDisabled: boolean | undefined = false;
 	export let type: undefined | 'button' | 'submit' = 'submit';
 	export let variant: undefined | 'negative' | 'positive' = 'positive';
 	export let formName = '';
@@ -13,6 +14,7 @@
 </script>
 
 <button
+	disabled={isDisabled}
 	form={formName}
 	type={type === 'submit' ? 'submit' : 'button'}
 	class={buttonClass}

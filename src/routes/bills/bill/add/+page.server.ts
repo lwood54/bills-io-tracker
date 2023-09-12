@@ -1,6 +1,7 @@
 import { PRIVATE_SECRET } from '$env/static/private';
 import { UrlPaths } from '$lib/constants/root';
 import { getUser } from '$lib/helpers/utils';
+import { redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {

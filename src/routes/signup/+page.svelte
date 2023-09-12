@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { FormContainer } from '$lib/components/Common';
+	import { Input } from '$lib/components/Elements';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
@@ -15,39 +17,20 @@
 	<meta name="description" content="Login page" />
 </svelte:head>
 
-<form method="POST">
-	<label
-		>Username
-		<div>
-			<input class="text-slate-800" name="username" type="text" bind:value={username} />
-		</div>
-	</label>
-	<label
-		>Email
-		<div>
-			<input class="text-slate-800" name="email" type="email" bind:value={email} />
-		</div>
-	</label>
-	<label
-		>First Name
-		<div>
-			<input class="text-slate-800" name="firstname" type="text" bind:value={firstName} />
-		</div>
-	</label>
-	<label
-		>Last Name
-		<div>
-			<input class="text-slate-800" name="lastname" type="text" bind:value={lastName} />
-		</div>
-	</label>
-	<label
-		>Password
-		<div>
-			<input class="text-slate-800" name="password" type="password" bind:value={password} />
-		</div>
-	</label>
-	<button type="submit">Sign Me Up!</button>
-</form>
+<FormContainer
+	method="POST"
+	formName="sign-up"
+	title="Login"
+	buttonLabel="Sign me up!"
+	buttonType="submit"
+>
+	<Input name="username" val={username}>Username</Input>
+	<Input name="email" val={email}>Email</Input>
+	<Input name="firstname" val={firstName}>First Name</Input>
+	<Input name="lastname" val={lastName}>Last Name</Input>
+	<Input name="password" variant="password" val={password}>Password</Input>
+</FormContainer>
+
 {#if form?.error}
 	{form.error}
 {/if}

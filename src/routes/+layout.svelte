@@ -23,6 +23,7 @@
 		<NavItem href="/" isActive={pageRoute === '/'}>Home</NavItem>
 		{#if $rootStore.username}
 			<NavItem href="/bills" isActive={Boolean(pageRoute?.includes('/bills'))}>Bills</NavItem>
+			<NavItem href="/user" isActive={Boolean(pageRoute?.includes('/user'))}>User</NavItem>
 		{/if}
 	</div>
 	<div class="nav-group-2">

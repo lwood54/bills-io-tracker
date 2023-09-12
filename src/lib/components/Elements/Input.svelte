@@ -6,7 +6,7 @@
 	const style = 'bg-slate-800 bg-opacity-10 w-full text-slate-300 px-2 py-1 rounded border';
 </script>
 
-<label>
+<label class="w-full">
 	<slot />
 	<div>
 		{#if variant === 'password'}

@@ -14,7 +14,11 @@
 	let date = new Date();
 </script>
 
-<h1>Logs</h1>
+<svelte:head>
+	<title>Spending Logs</title>
+</svelte:head>
+
+<h1>Spending Logs</h1>
 <Card bg="bg-sky-400">
 	{#each logs as log}
 		<Card>
