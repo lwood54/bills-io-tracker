@@ -5,6 +5,7 @@
 	import { rootStore } from '$lib/stores/root';
 	import { Input } from '$lib/components/Elements';
 	import { FormContainer } from '$lib/components/Common';
+	import FormBody from '$lib/components/Common/FormBody.svelte';
 
 	let username: string;
 	let password: string;
@@ -28,16 +29,14 @@
 	action="?/login"
 	method="POST"
 	formName="login"
-	title="Login"
-	buttonLabel="Submit"
-	buttonType="submit"
-	{isSubmitting}
 	submittingCallback={(isFormSubmitting) => {
 		isSubmitting = isFormSubmitting;
 	}}
 >
-	<Input name="username" val={username}>Username</Input>
-	<Input name="password" variant="password" val={password}>Password</Input>
+	<FormBody formName="login" {isSubmitting} title="Login">
+		<Input name="username" val={username}>Username</Input>
+		<Input name="password" variant="password" val={password}>Password</Input>
+	</FormBody>
 </FormContainer>
 
 {#if form?.error}

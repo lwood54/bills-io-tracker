@@ -28,7 +28,7 @@ export const actions: Actions = {
 				const encrypted = CryptoJS.AES.encrypt(`${result.userId},${result.token}`, PRIVATE_SECRET);
 				const stringForCookie = encrypted.toString();
 				cookies.set('token', stringForCookie);
-				return { user: result };
+				return { response: result };
 			}
 		} catch (error) {
 			console.error('ERROR @singup create user', error);
