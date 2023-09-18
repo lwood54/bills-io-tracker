@@ -4,9 +4,19 @@
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
-	import type { ActionData } from './$types';
+	// import Toast from '$lib/components/Elements/Toast.svelte';
+	import type { ActionData, PageData } from './$types';
+
+	export let data: PageData;
 	export let form: ActionData;
-	let title: string;
+	$: showToast = form?.isSuccess;
+	// $: if (showToast) {
+	// 	setTimeout(() => {
+	// 		showToast = false;
+	// 	}, 3_000);
+	// }
+	$: category = data.category;
+	$: title = category?.title ?? '';
 	let isSubmitting = false;
 	$: if (form?.isSuccess && browser) {
 		goto('/bills/categories');
@@ -14,27 +24,24 @@
 </script>
 
 <svelte:head>
-	<title>Add Category</title>
+	<title>Edit Bill</title>
 </svelte:head>
 
 <FormContainer
-	formName="add-category"
+	action="?/update"
+	formName="update-category-form"
 	method="POST"
 	submittingCallback={(isFormSubmitting) => {
 		isSubmitting = isFormSubmitting;
 	}}
 >
 	<FormBody
-		formName="add-category"
+		formName="update-category-form"
 		onClose={() => goto('/bills/categories')}
-		title="Add Category"
+		title="Edit Bill"
 		{isSubmitting}
 	>
-		<Input name="title" val={title}>Category Name</Input>
-		<!-- <Input name="balance" val={balance} variant="number">Current Balance</Input>
-		<Input name="amount" val={amount} variant="number">Payment Amount</Input>
-		<Input name="daydue" val={dayDue} variant="number">Day of Month Due</Input>
-		<Input name="limit" val={limit} variant="number">Credit Limit</Input>
-		<Input name="rate" val={rate} variant="number" step="0.01">Interest Rate</Input> -->
+		<Input name="title" val={title}>Account Nickname</Input>
 	</FormBody>
 </FormContainer>
+<!-- <Toast show={showToast} message="Bill updated." variant="success" /> -->

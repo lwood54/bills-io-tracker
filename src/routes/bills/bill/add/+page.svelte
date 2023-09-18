@@ -3,8 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
-	import { Button, Input } from '$lib/components/Elements';
-	import Spinner from '$lib/components/Elements/Spinner.svelte';
+	import { Input } from '$lib/components/Elements';
 	import type { ActionData } from './$types';
 	export let form: ActionData;
 	let amount: number;

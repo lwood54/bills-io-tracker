@@ -13,7 +13,6 @@
 	use:enhance={() => {
 		submittingCallback && submittingCallback(true);
 		return async ({ result, update }) => {
-			console.info({ result___: result });
 			update();
 			if (result.type === 'success') {
 				submittingCallback && submittingCallback(false);

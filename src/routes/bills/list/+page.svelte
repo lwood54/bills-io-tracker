@@ -16,16 +16,6 @@
 	$: if (data.error && browser) {
 		goto(`/error-page?msg=${data.error}`);
 	}
-
-	const handleDelete = () => {
-		console.info('deleting with userId: ', data.userInfo?.userId);
-		// open delete modal
-	};
-
-	const handleClose = () => {
-		isOpen = false;
-		selectedBill = undefined;
-	};
 </script>
 
 <svelte:head>

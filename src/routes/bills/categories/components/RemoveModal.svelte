@@ -1,20 +1,26 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Modal } from '$lib/components';
-	import type { Bill } from '$lib/types/api/bills';
+	import type { Category } from '$lib/types/api/bills';
 
 	export let isOpen: boolean;
 	export let onClose: () => void;
-	export let bill: Bill | undefined;
+	export let category: Category | undefined;
 	let isSubmitting = false;
 </script>
 
-{#if isOpen && bill}
-	<Modal {onClose} {isSubmitting} submitLabel="Remove" title="Remove Bill" formName="remove-bill">
+{#if isOpen && category}
+	<Modal
+		{onClose}
+		{isSubmitting}
+		submitLabel="Remove"
+		title="Remove Category"
+		formName="remove-category"
+	>
 		<div class="py-4">
 			<form
-				action={`?/remove&billId=${bill.id}`}
-				id="remove-bill"
+				action={`?/remove&categoryId=${category.id}`}
+				id="remove-category"
 				method="POST"
 				use:enhance={() => {
 					isSubmitting = true;
@@ -27,7 +33,7 @@
 					};
 				}}
 			>
-				<p>Are you sure you want to remove the bill "{bill.title}"?</p>
+				<p>Are you sure you want to remove the category "{category.title}"?</p>
 			</form>
 		</div>
 	</Modal>

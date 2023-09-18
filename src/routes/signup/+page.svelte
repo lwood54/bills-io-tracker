@@ -4,7 +4,6 @@
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
-	import { rootStore } from '$lib/stores/root';
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
@@ -17,13 +16,10 @@
 	let isSubmitting = false;
 
 	$: if (form?.response.userId && browser) {
+		// 	// NOTE: page is on sever before mounting, so need to check for browser to ensure
+		// 	// this is now client-side. https://github.com/sveltejs/kit/discussions/3245
 		goto('/');
 	}
-	// $: if (data.isLoggedIn && browser && $rootStore.username) {
-	// 	// NOTE: page is on sever before mounting, so need to check for browser to ensure
-	// 	// this is now client-side. https://github.com/sveltejs/kit/discussions/3245
-	// 	goto('/');
-	// }
 </script>
 
 <svelte:head>

@@ -13,7 +13,7 @@ export const UrlPaths = {
 		delete: (id: string) => `${ROOT_URL}/bills/${id}`
 	},
 	categories: {
-		create: (userId: string) => `${ROOT_URL}/categories/${userId}create`,
+		create: (userId: string) => `${ROOT_URL}/categories/${userId}/create`,
 		get: {
 			item: (id: string) => `${ROOT_URL}/categories/${id}`,
 			list: (userId: string) => `${ROOT_URL}/categories/${userId}/list`

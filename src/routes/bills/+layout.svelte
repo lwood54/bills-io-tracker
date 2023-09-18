@@ -23,14 +23,29 @@
 		<NavItem href="/bills/list" isActive={pageRoute === '/bills/list'}>Bills List</NavItem>
 	</div>
 	{#if pageRoute !== '/bills'}
-		<button class="p-2" on:click={addItem}>
+		<button class="p-2 add-icon" on:click={addItem}>
 			<Icon
-				class="text-green-400 hover:text-green-600 active:text-green-200"
+				class="text-green-400 hover:text-green-600 active:text-green-200 w-full h-full"
 				icon="mdi:plus-circle-outline"
-				width="45"
-				height="45"
 			/>
 		</button>
 	{/if}
 </div>
+
 <slot />
+
+<style>
+	.add-icon {
+		height: 45px;
+		width: 45px;
+		/* border: 1px solid blue; */
+	}
+
+	@media (min-width: 500px) {
+		.add-icon {
+			height: 65px;
+			width: 65px;
+			/* border: 2px solid green; */
+		}
+	}
+</style>

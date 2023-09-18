@@ -6,6 +6,8 @@
 	export let title = '';
 	export let formName = '';
 	export let isSubmitting: boolean | undefined = false;
+	export let submitLabel: string | undefined = 'Submit';
+	export let cancelLabel: string | undefined = 'Cancel';
 </script>
 
 <div
@@ -37,13 +39,13 @@
 						e.preventDefault();
 						onClose();
 					}}
-					variant="negative">Cancel</Button
+					variant="negative">{cancelLabel}</Button
 				>
 				<Button isDisabled={isSubmitting} {formName} type="submit">
 					{#if isSubmitting}
 						<Spinner variant="button" scale="xs" />
 					{:else}
-						Submit
+						{submitLabel}
 					{/if}
 				</Button>
 			</div>

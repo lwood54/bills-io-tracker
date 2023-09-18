@@ -15,9 +15,6 @@
 	// 		showToast = false;
 	// 	}, 3_000);
 	// }
-	$: {
-		console.info('result??', form);
-	}
 	$: bill = data.bill;
 	$: amount = bill?.amount ?? 0;
 	$: balance = bill?.balance ?? 0;

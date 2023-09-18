@@ -1,29 +1,31 @@
-import { getUser } from '$lib/helpers/utils';
-import { error, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 import { PRIVATE_SECRET } from '$env/static/private';
 import { UrlPaths } from '$lib/constants/root';
-import type { Log } from '$lib/types/api/bills';
+import { getUser } from '$lib/helpers/utils';
+import type { Category } from '$lib/types/api/bills';
+import { error, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 
 export const load = async ({
-	cookies
-}: ServerLoadEvent): Promise<{ logs?: Log[] } | { error?: string }> => {
+	cookies,
+	params
+}: ServerLoadEvent): Promise<{ category?: Category } | { error?: string }> => {
 	const publicToken = cookies.get('token');
-	if (publicToken) {
-		const { token, userId } = getUser(publicToken, PRIVATE_SECRET);
+	const categoryId = params.id;
+	if (publicToken && categoryId) {
+		const { token } = getUser(publicToken, PRIVATE_SECRET);
 		try {
-			const res = await fetch(UrlPaths.logs.get.list(userId), {
+			const res = await fetch(UrlPaths.categories.get.item(categoryId), {
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-Type': 'application/json'
 				}
 			});
 			if (res.ok) {
-				return { logs: await res.json() };
+				return { category: await res.json() };
 			} else {
 				return await res.json();
 			}
 		} catch (err) {
-			throw error(500, 'error fetching logs');
+			throw error(500, 'error fetching category details');
 		}
 	} else {
 		throw redirect(307, '/login');
@@ -31,10 +33,11 @@ export const load = async ({
 };
 
 export const actions: Actions = {
-	remove: async ({ fetch, cookies, url }) => {
+	update: async ({ fetch, request, cookies, url }) => {
 		const publicToken = cookies.get('token');
-		const params = new URLSearchParams(url.searchParams);
-		const logId = params.get('logId');
+		const data = await request.formData();
+		const title = data.get('title');
+		const categoryId = url.pathname.split('/edit/')[1];
 		if (!publicToken) {
 			return {
 				error: 'not logged in'
@@ -46,14 +49,15 @@ export const actions: Actions = {
 				error: 'not authorized'
 			};
 		}
-		if (!logId) {
+		if (!categoryId) {
 			return {
-				error: 'spending log not identified'
+				error: 'bill not identified'
 			};
 		}
 		try {
-			const res = await fetch(UrlPaths.logs.delete(logId), {
-				method: 'DELETE',
+			const res = await fetch(UrlPaths.categories.update(categoryId), {
+				method: 'PUT',
+				body: JSON.stringify({ title }),
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-type': 'application/json; charset=UTF-8'

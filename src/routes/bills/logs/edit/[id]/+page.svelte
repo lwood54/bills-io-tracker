@@ -4,15 +4,24 @@
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
-	import type { Scale } from '$lib/types/api/bills';
-	import type { ActionData } from './$types';
-	export let form: ActionData;
+	import { format } from 'date-fns';
+	// import Toast from '$lib/components/Elements/Toast.svelte';
+	import type { ActionData, PageData } from './$types';
 
-	let amount: number;
-	let categoryId: string;
-	let createdAt: string;
-	let scale: Scale;
-	let title: string;
+	export let data: PageData;
+	export let form: ActionData;
+	$: showToast = form?.isSuccess;
+	// $: if (showToast) {
+	// 	setTimeout(() => {
+	// 		showToast = false;
+	// 	}, 3_000);
+	// }
+	$: log = data.log;
+	$: title = log?.title ?? '';
+	$: amount = Number(log?.amount);
+	$: categoryId = log?.categoryId;
+	$: createdAt = log?.createdAt ? format(new Date(log.createdAt), 'yyyy-MM-dd') : undefined;
+	$: scale = log?.scale ?? '';
 	let isSubmitting = false;
 	$: if (form?.isSuccess && browser) {
 		goto('/bills/logs');
@@ -20,20 +29,21 @@
 </script>
 
 <svelte:head>
-	<title>Spending Log</title>
+	<title>Edit Log</title>
 </svelte:head>
 
 <FormContainer
-	formName="add-category"
+	action="?/update"
+	formName="update-log-form"
 	method="POST"
 	submittingCallback={(isFormSubmitting) => {
 		isSubmitting = isFormSubmitting;
 	}}
 >
 	<FormBody
-		formName="add-category"
+		formName="update-log-form"
 		onClose={() => goto('/bills/logs')}
-		title="Spending Log"
+		title="Edit Log"
 		{isSubmitting}
 	>
 		<Input name="title" val={title}>Log Name</Input>
@@ -58,9 +68,4 @@
 		<input class="text-gray-500" id="createdAt" name="createdAt" type="date" value={createdAt} />
 	</FormBody>
 </FormContainer>
-
-<!-- const amount = Number(data.get('amount'));
-const categoryId = data.get('categoryId');
-const createdAt = data.get('createdAt');
-const scale = data.get('scale');
-const title = data.get('title'); -->
+<!-- <Toast show={showToast} message="Bill updated." variant="success" /> -->
