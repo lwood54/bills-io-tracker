@@ -1,4 +1,4 @@
-import type { ServerLoadEvent } from '@sveltejs/kit';
+import { redirect, type ServerLoadEvent } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import CryptoJS from 'crypto-js';
 import { PRIVATE_SECRET } from '$env/static/private';
@@ -16,27 +16,22 @@ export const actions: Actions = {
 		const password = data.get('password') as string;
 		const url = `${ROOT_URL}/login`;
 		if (username && password) {
-			try {
-				const response = await fetch(url, {
-					method: 'POST',
-					body: JSON.stringify({ username, password }),
-					headers: { 'Content-type': 'application/json; charset=UTF-8' } // NOTE: won't work without charset
-				});
-				const user = await response.json();
-				if (user.error || !user) {
-					return { error: user.error ?? 'error fetching user' };
-				}
-				if (PRIVATE_SECRET) {
-					const encrypted = CryptoJS.AES.encrypt(`${user.userId},${user.token}`, PRIVATE_SECRET);
-					const stringForCookie = encrypted.toString();
-					cookies.set('token', stringForCookie);
-					return { user };
-					// NOTE: for future reference, redirets inside a try/catch does not allow SvelteKit to handle
-					// so it won't work correctly when used like this. https://kit.svelte.dev/docs/load#redirects
-				}
-			} catch (error) {
-				console.error(error);
-				return { error };
+			const response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify({ username, password }),
+				headers: { 'Content-type': 'application/json; charset=UTF-8' } // NOTE: won't work without charset
+			});
+			const user = await response.json();
+			if (user.error || !user) {
+				return { error: user.error ?? 'error fetching user' };
+			}
+			if (PRIVATE_SECRET) {
+				const encrypted = CryptoJS.AES.encrypt(`${user.userId},${user.token}`, PRIVATE_SECRET);
+				const stringForCookie = encrypted.toString();
+				cookies.set('token', stringForCookie);
+				throw redirect(307, '/');
+				// NOTE: for future reference, redirets inside a try/catch does not allow SvelteKit to handle
+				// so it won't work correctly when used like this. https://kit.svelte.dev/docs/load#redirects
 			}
 		}
 	},

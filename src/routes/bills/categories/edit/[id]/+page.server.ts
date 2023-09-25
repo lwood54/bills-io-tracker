@@ -54,23 +54,18 @@ export const actions: Actions = {
 				error: 'bill not identified'
 			};
 		}
-		try {
-			const res = await fetch(UrlPaths.categories.update(categoryId), {
-				method: 'PUT',
-				body: JSON.stringify({ title }),
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-type': 'application/json; charset=UTF-8'
-				}
-			});
-			if (res.ok) {
-				return { isSuccess: true };
-			} else {
-				return await res.json();
+		const res = await fetch(UrlPaths.categories.update(categoryId), {
+			method: 'PUT',
+			body: JSON.stringify({ title }),
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-type': 'application/json; charset=UTF-8'
 			}
-		} catch (err) {
-			console.error(err);
-			return { error: err };
+		});
+		if (res.ok) {
+			throw redirect(307, '/bills/categories');
+		} else {
+			return await res.json();
 		}
 	}
 };

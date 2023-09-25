@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { DateInput, DatePicker } from 'date-picker-svelte';
-	import Card from '$lib/components/Elements/Card.svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';

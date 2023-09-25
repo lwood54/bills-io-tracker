@@ -1,16 +1,11 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
 	import type { ActionData } from './$types';
-	export let form: ActionData;
 	let title: string;
 	let isSubmitting = false;
-	$: if (form?.isSuccess && browser) {
-		goto('/bills/categories');
-	}
 </script>
 
 <svelte:head>
@@ -31,10 +26,5 @@
 		{isSubmitting}
 	>
 		<Input name="title" val={title}>Category Name</Input>
-		<!-- <Input name="balance" val={balance} variant="number">Current Balance</Input>
-		<Input name="amount" val={amount} variant="number">Payment Amount</Input>
-		<Input name="daydue" val={dayDue} variant="number">Day of Month Due</Input>
-		<Input name="limit" val={limit} variant="number">Credit Limit</Input>
-		<Input name="rate" val={rate} variant="number" step="0.01">Interest Rate</Input> -->
 	</FormBody>
 </FormContainer>

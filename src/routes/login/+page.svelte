@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import type { ActionData, PageData } from './$types';
-	import { browser } from '$app/environment';
-	import { rootStore } from '$lib/stores/root';
+	import type { ActionData } from './$types';
 	import { Input } from '$lib/components/Elements';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
@@ -10,14 +7,7 @@
 	let username: string;
 	let password: string;
 	let isSubmitting = false;
-	export let data: PageData;
 	export let form: ActionData;
-
-	$: if (data.isLoggedIn && browser && $rootStore.username) {
-		// NOTE: page is on sever before mounting, so need to check for browser to ensure
-		// this is now client-side. https://github.com/sveltejs/kit/discussions/3245
-		goto('/');
-	}
 </script>
 
 <svelte:head>

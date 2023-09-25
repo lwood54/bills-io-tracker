@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
-	import type { ActionData } from './$types';
-	export let form: ActionData;
+
 	let amount: number;
 	let balance: number;
 	let dayDue: number;
@@ -13,9 +11,6 @@
 	let rate: number;
 	let title: string;
 	let isSubmitting = false;
-	$: if (form?.isSuccess && browser) {
-		goto('/bills/list');
-	}
 </script>
 
 <svelte:head>

@@ -2,6 +2,7 @@ import type { Actions } from './$types';
 import CryptoJS from 'crypto-js';
 import { PRIVATE_SECRET } from '$env/static/private';
 import { ROOT_URL } from '$lib/constants/root';
+import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
 	default: async ({ fetch, request, cookies }) => {
@@ -12,29 +13,22 @@ export const actions: Actions = {
 		const lastName = data.get('lastname') as string;
 		const firstName = data.get('firstname') as string;
 		const url = `${ROOT_URL}/signup`;
-		try {
-			const res = await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify({ username, password, lastName, firstName, email }),
-				headers: {
-					'Content-type': 'application/json; charset=UTF-8'
-				} // NOTE: won't work without charset
-			});
-			const result = await res.json();
-			if (result.error) {
-				return { error: result.error };
-			}
-			if (PRIVATE_SECRET) {
-				const encrypted = CryptoJS.AES.encrypt(`${result.userId},${result.token}`, PRIVATE_SECRET);
-				const stringForCookie = encrypted.toString();
-				cookies.set('token', stringForCookie);
-				return { response: result };
-			}
-		} catch (error) {
-			console.error('ERROR @singup create user', error);
-			if (error instanceof Error) {
-				return { error: error.message };
-			}
+		const res = await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify({ username, password, lastName, firstName, email }),
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8'
+			} // NOTE: won't work without charset
+		});
+		const result = await res.json();
+		if (result.error) {
+			return { error: result.error };
+		}
+		if (PRIVATE_SECRET) {
+			const encrypted = CryptoJS.AES.encrypt(`${result.userId},${result.token}`, PRIVATE_SECRET);
+			const stringForCookie = encrypted.toString();
+			cookies.set('token', stringForCookie);
+			throw redirect(307, '/');
 		}
 	}
 };

@@ -20,7 +20,7 @@ export const load = async ({
 					'Content-Type': 'application/json'
 				}
 			});
-			// NOTE: learned can only await once. So awaiting and logging
+			// NOTE: learned that you can only await once. So awaiting and logging
 			// and then awaiting and returning results in category.bodyUsed = true
 			// so throwing an error 'Body unusable...'
 			if (res.ok) {

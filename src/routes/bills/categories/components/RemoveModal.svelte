@@ -6,7 +6,7 @@
 	export let isOpen: boolean;
 	export let onClose: () => void;
 	export let category: Category | undefined;
-	let isSubmitting = false;
+	export let isSubmitting = false;
 </script>
 
 {#if isOpen && category}

@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
-	import type { ActionData, PageData } from './$types';
+	import type { ActionData } from './$types';
 
 	export let form: ActionData;
 
@@ -14,12 +12,6 @@
 	let firstName: string;
 	let lastName: string;
 	let isSubmitting = false;
-
-	$: if (form?.response.userId && browser) {
-		// 	// NOTE: page is on sever before mounting, so need to check for browser to ensure
-		// 	// this is now client-side. https://github.com/sveltejs/kit/discussions/3245
-		goto('/');
-	}
 </script>
 
 <svelte:head>
@@ -46,9 +38,9 @@
 {#if form?.error}
 	{form.error}
 {/if}
-{#if form?.response?.message?.includes('taken')}
-	<p class="text-red-600 text-center">That email is already in use.</p>
-{/if}
 
+<!-- {#if form?.response?.message?.includes('taken')}
+	<p class="text-red-600 text-center">That email is already in use.</p>
+{/if} -->
 <style>
 </style>

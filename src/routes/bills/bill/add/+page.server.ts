@@ -1,6 +1,7 @@
 import { PRIVATE_SECRET } from '$env/static/private';
 import { UrlPaths } from '$lib/constants/root';
 import { getUser } from '$lib/helpers/utils';
+import { redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -24,23 +25,19 @@ export const actions: Actions = {
 				error: 'not authorized'
 			};
 		}
-		try {
-			const res = await fetch(UrlPaths.bills.create(userId), {
-				method: 'POST',
-				body: JSON.stringify({ amount, balance, dayDue, limit, rate, title }),
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-type': 'application/json; charset=UTF-8'
-				}
-			});
-			if (res.ok) {
-				return { isSuccess: true };
-			} else {
-				return await res.json();
+
+		const res = await fetch(UrlPaths.bills.create(userId), {
+			method: 'POST',
+			body: JSON.stringify({ amount, balance, dayDue, limit, rate, title }),
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-type': 'application/json; charset=UTF-8'
 			}
-		} catch (err) {
-			console.error(err);
-			return { error: err };
+		});
+		if (res.ok) {
+			throw redirect(307, '/bills/list');
+		} else {
+			return await res.json();
 		}
 	}
 };

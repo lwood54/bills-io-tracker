@@ -51,22 +51,17 @@ export const actions: Actions = {
 				error: 'category not identified'
 			};
 		}
-		try {
-			const res = await fetch(UrlPaths.categories.delete(categoryId), {
-				method: 'DELETE',
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-type': 'application/json; charset=UTF-8'
-				}
-			});
-			if (res.ok) {
-				return { isSuccess: true };
-			} else {
-				return await res.json();
+		const res = await fetch(UrlPaths.categories.delete(categoryId), {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-type': 'application/json; charset=UTF-8'
 			}
-		} catch (err) {
-			console.error(err);
-			return { error: err };
+		});
+		if (res.ok) {
+			return { isRemoved: true };
+		} else {
+			return await res.json();
 		}
 	}
 };

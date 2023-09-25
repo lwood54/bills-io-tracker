@@ -3,10 +3,11 @@
 	import { goto } from '$app/navigation';
 	import { IconButton } from '$lib/components/Elements';
 	import Icon from '@iconify/svelte';
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
 	import type { Category } from '$lib/types/api/bills';
 	import RemoveModal from './components/RemoveModal.svelte';
 	export let data: PageData;
+	export let form: ActionData;
 
 	let isOpen = false;
 	let selectedCategory: Category | undefined;
@@ -22,8 +23,16 @@
 </svelte:head>
 
 <div class="flex flex-col p-2 sm:p-4 items-center relative">
-	<RemoveModal category={selectedCategory} {isOpen} onClose={() => (isOpen = false)} />
+	<RemoveModal
+		isSubmitting={Boolean(form && !form?.isRemoved)}
+		category={selectedCategory}
+		{isOpen}
+		onClose={() => (isOpen = false)}
+	/>
 	<h1 class="text-2xl mb-4">Categories</h1>
+	{#if form?.error}
+		<p class="text-red-500">{form.error}</p>
+	{/if}
 	<div class="flex flex-col w-full sm:flex-row sm:justify-center sm:flex-wrap gap-2 items-center">
 		{#each categories as category}
 			<div class="flex w-full sm:w-fit relative">

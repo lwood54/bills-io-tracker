@@ -23,9 +23,6 @@
 	$: rate = bill?.rate ?? 0;
 	$: title = bill?.title ?? '';
 	let isSubmitting = false;
-	$: if (form?.isSuccess && browser) {
-		goto('/bills/list');
-	}
 </script>
 
 <svelte:head>

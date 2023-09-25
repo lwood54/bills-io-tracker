@@ -1,17 +1,17 @@
 import { PRIVATE_SECRET } from '$env/static/private';
 import { UrlPaths } from '$lib/constants/root';
 import { getUser } from '$lib/helpers/utils';
-import type { Log } from '$lib/types/api/bills';
+import type { Category, Log } from '$lib/types/api/bills';
 import { error, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 
 export const load = async ({
 	cookies,
 	params
-}: ServerLoadEvent): Promise<{ log?: Log } | { error?: string }> => {
+}: ServerLoadEvent): Promise<{ categories?: Category[]; log?: Log } | { error?: string }> => {
 	const publicToken = cookies.get('token');
 	const logId = params.id;
 	if (publicToken && logId) {
-		const { token } = getUser(publicToken, PRIVATE_SECRET);
+		const { token, userId } = getUser(publicToken, PRIVATE_SECRET);
 		try {
 			const res = await fetch(UrlPaths.logs.get.item(logId), {
 				headers: {
@@ -19,8 +19,14 @@ export const load = async ({
 					'Content-Type': 'application/json'
 				}
 			});
-			if (res.ok) {
-				return { log: await res.json() };
+			const categoriesResponse = await fetch(UrlPaths.categories.get.list(userId), {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json'
+				}
+			});
+			if (res.ok && categoriesResponse.ok) {
+				return { log: await res.json(), categories: await categoriesResponse.json() };
 			} else {
 				return await res.json();
 			}
@@ -63,23 +69,18 @@ export const actions: Actions = {
 				error: 'log not identified'
 			};
 		}
-		try {
-			const res = await fetch(UrlPaths.logs.update(logId), {
-				method: 'PUT',
-				body: JSON.stringify({ amount, categoryId, createdAt: createdAtDate, scale, title }),
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-type': 'application/json; charset=UTF-8'
-				}
-			});
-			if (res.ok) {
-				return { isSuccess: true };
-			} else {
-				return await res.json();
+		const res = await fetch(UrlPaths.logs.update(logId), {
+			method: 'PUT',
+			body: JSON.stringify({ amount, categoryId, createdAt: createdAtDate, scale, title }),
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-type': 'application/json; charset=UTF-8'
 			}
-		} catch (err) {
-			console.error(err);
-			return { error: err };
+		});
+		if (res.ok) {
+			throw redirect(307, '/bills/logs');
+		} else {
+			return await res.json();
 		}
 	}
 };

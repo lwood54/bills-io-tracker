@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
@@ -18,9 +17,6 @@
 	$: category = data.category;
 	$: title = category?.title ?? '';
 	let isSubmitting = false;
-	$: if (form?.isSuccess && browser) {
-		goto('/bills/categories');
-	}
 </script>
 
 <svelte:head>
