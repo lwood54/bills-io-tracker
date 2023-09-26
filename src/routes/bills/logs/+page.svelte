@@ -13,6 +13,7 @@
 
 	export let data: PageData;
 	$: logs = data.logs ?? [];
+	$: categories = data.categories ?? [];
 	$: if (data.error && browser) {
 		goto(`/error-page?msg=${data.error}`);
 	}
@@ -45,13 +46,13 @@
 						<h1 class="w-full text-lg">{log.title}</h1>
 					</div>
 					<div class="flex flex-wrap sm:flex-row flex-col mt-4">
-						<p class="sm:w-1/2 w-full">{log.title}</p>
 						<p class="sm:w-1/2 w-full">Payment: {log.amount}</p>
-						<p class="sm:w-1/2 w-full">Category Id: {log.categoryId}</p>
+						<p class="sm:w-1/2 w-full">
+							Category: {categories.find((category) => category.id === log.categoryId)?.title}
+						</p>
 						<p class="sm:w-1/2 w-full">{log.scale}</p>
-						<p class="sm:w-1/2 w-full">Created At: {new Date(log.createdAt)}</p>
-						<p class="sm:w-1/2 w-52">
-							Last updated: {format(new Date(log.updatedAt), 'mm/dd/yy h:mm aaa')}
+						<p class="sm:w-1/2 w-full">
+							Purchase Date: {format(new Date(log.createdAt), 'MM/dd/yy')}
 						</p>
 					</div>
 					<div class="absolute top-0 right-0 p-2">

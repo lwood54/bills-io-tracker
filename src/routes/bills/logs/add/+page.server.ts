@@ -4,6 +4,7 @@ import { getUser } from '$lib/helpers/utils';
 import { error, redirect, type ServerLoadEvent } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import type { Category } from '$lib/types/api/bills';
+import { convertDashToSlash } from '$lib/helpers';
 
 export const load = async ({
 	cookies
@@ -42,7 +43,8 @@ export const actions: Actions = {
 		const title = data.get('title');
 		let createdAtDate: Date | undefined = undefined;
 		if (createdAt) {
-			createdAtDate = new Date(createdAt);
+			const dateString = convertDashToSlash(createdAt);
+			createdAtDate = new Date(dateString);
 		}
 		if (!publicToken) {
 			return {

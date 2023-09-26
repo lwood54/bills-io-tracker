@@ -2,11 +2,11 @@ import { getUser } from '$lib/helpers/utils';
 import { error, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 import { PRIVATE_SECRET } from '$env/static/private';
 import { UrlPaths } from '$lib/constants/root';
-import type { Log } from '$lib/types/api/bills';
+import type { Category, Log } from '$lib/types/api/bills';
 
 export const load = async ({
 	cookies
-}: ServerLoadEvent): Promise<{ logs?: Log[] } | { error?: string }> => {
+}: ServerLoadEvent): Promise<{ categories?: Category[]; logs?: Log[] } | { error?: string }> => {
 	const publicToken = cookies.get('token');
 	if (publicToken) {
 		const { token, userId } = getUser(publicToken, PRIVATE_SECRET);
@@ -17,8 +17,15 @@ export const load = async ({
 					'Content-Type': 'application/json'
 				}
 			});
+			const categoriesResponse = await fetch(UrlPaths.categories.get.list(userId), {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json'
+				}
+			});
 			if (res.ok) {
-				return { logs: await res.json() };
+				// return { logs: await res.json() };
+				return { logs: await res.json(), categories: await categoriesResponse.json() };
 			} else {
 				return await res.json();
 			}

@@ -48,9 +48,6 @@
 						<p class="sm:w-1/2 w-full">Day of Month due: {bill.dayDue}</p>
 						<p class="sm:w-1/2 w-full">Credit Limit: {bill.limit}</p>
 						<p class="sm:w-1/2 w-full">Interest Rate: {bill.rate}</p>
-						<p class="sm:w-1/2 w-52">
-							Last updated: {format(new Date(bill.updatedAt), 'mm/dd/yy h:mm aaa')}
-						</p>
 					</div>
 					<div class="absolute top-0 right-0 p-2">
 						<IconButton

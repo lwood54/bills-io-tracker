@@ -4,13 +4,14 @@
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
 	import type { Scale } from '$lib/types/api/bills';
+	import { format } from 'date-fns';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	let amount: number;
 	let categoryId: string;
-	let createdAt: string;
+	let createdAt: string = format(new Date(Date.now()), 'yyyy-MM-dd');
 	let scale: Scale;
 	let title: string;
 	let isSubmitting = false;
