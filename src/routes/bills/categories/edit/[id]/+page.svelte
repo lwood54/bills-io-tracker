@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>Edit Bill</title>
+	<title>Edit Category</title>
 </svelte:head>
 
 <FormContainer
@@ -34,7 +34,7 @@
 	<FormBody
 		formName="update-category-form"
 		onClose={() => goto('/bills/categories')}
-		title="Edit Bill"
+		title="Edit Category"
 		{isSubmitting}
 	>
 		<Input name="title" val={title}>Account Nickname</Input>

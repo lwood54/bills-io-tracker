@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
-	import { Input } from '$lib/components/Elements';
+	import { Input, Select } from '$lib/components/Elements';
 	import type { Scale } from '$lib/types/api/bills';
 	import { format } from 'date-fns';
 	import type { PageData } from './$types';
@@ -38,22 +38,17 @@
 	>
 		<Input name="title" val={title}>Log Name</Input>
 		<Input name="amount" val={amount} variant="currency" step=".01">Amount</Input>
-		<!-- TODO: make real select component and bring in actual categories as options -->
-		<label for="categoryId">Category</label>
-		<select class="text-gray-500" name="categoryId" id="categoryId" bind:value={categoryId}>
-			{#each categories as category}
-				<option value={category.id}>{category.title}</option>
-			{/each}
-		</select>
-		<label for="scale">Scale</label>
-		<select class="text-gray-500" name="scale" id="scale" bind:value={scale}>
-			<option value="ESSENTIAL">Essential</option>
-			<option value="NEUTRAL">Neutral</option>
-			<option value="NON_ESSENTIAL">Non-Essential</option>
-		</select>
-		<!-- <Input name="createdAt" val={createdAt}>Purchase Date</Input> -->
-		<!-- TODO: customize Input component to take date type, then display a date display -->
-		<label for="categoryId">Purchase Date</label>
-		<input class="text-gray-500" id="createdAt" name="createdAt" type="date" value={createdAt} />
+		<Select options={categories} selectedValueId={categoryId} label="category" id="categoryId" />
+		<Select
+			options={[
+				{ id: 'ESSENTIAL', label: 'Essential' },
+				{ id: 'NEUTRAL', label: 'Neutral' },
+				{ id: 'NON_ESSENTIAL', label: 'Non-Essential' }
+			]}
+			selectedValueId={scale}
+			label="scale"
+			id="scale"
+		/>
+		<Input name="createdAt" variant="date" val={createdAt}>Purchase Date</Input>
 	</FormBody>
 </FormContainer>

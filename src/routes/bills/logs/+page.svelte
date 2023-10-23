@@ -39,7 +39,7 @@
 						}
 					}}
 					role="button"
-					tabIndex="0"
+					tabindex="0"
 					class="w-full p-2 sm:w-[600px] border-solid border-2 border-slate-500 hover:bg-slate-600 hover:cursor-pointer"
 				>
 					<div>

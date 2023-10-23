@@ -1,20 +1,12 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { FormContainer } from '$lib/components/Common';
 	import FormBody from '$lib/components/Common/FormBody.svelte';
 	import { Input } from '$lib/components/Elements';
-	// import Toast from '$lib/components/Elements/Toast.svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
-	export let form: ActionData;
-	$: showToast = form?.isSuccess;
-	// $: if (showToast) {
-	// 	setTimeout(() => {
-	// 		showToast = false;
-	// 	}, 3_000);
-	// }
+
 	$: bill = data.bill;
 	$: amount = bill?.amount ?? 0;
 	$: balance = bill?.balance ?? 0;
@@ -51,4 +43,3 @@
 		<Input name="rate" val={rate} variant="number" step="0.01">Interest Rate</Input>
 	</FormBody>
 </FormContainer>
-<!-- <Toast show={showToast} message="Bill updated." variant="success" /> -->

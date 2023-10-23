@@ -1,5 +1,10 @@
+<script>
+	import ThemeToggle from '$lib/components/ThemeToggle/ThemeToggle.svelte';
+</script>
+
 <svelte:head>
 	<title>User Details</title>
 </svelte:head>
 
-User Details
+<h1 class="h1 text-center">Color Theme Selection</h1>
+<ThemeToggle />

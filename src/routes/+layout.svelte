@@ -1,41 +1,66 @@
 <script lang="ts">
 	import { rootStore } from '$lib/stores/root';
-	import type { PageData } from './$types';
+	import type { PageData, SubmitFunction } from './$types';
 	import { page } from '$app/stores';
 	import './styles.css';
 	import '../app.css';
-	import NavItem from '$lib/components/nav/NavItem.svelte';
+	import { AppRail, AppRailAnchor, AppShell, LightSwitch } from '@skeletonlabs/skeleton';
+	import { invalidateAll } from '$app/navigation';
+	import IconWrapper from '$lib/components/IconWrapper/IconWrapper.svelte';
 
 	export let data: PageData;
-	$: pageRoute = $page.route.id;
+
 	$: logoutQueryParam = $page.route.id === '/login' ? '?src=login' : '';
 	$: {
 		$rootStore = { email: data.userInfo?.email, username: data.userInfo?.username };
 	}
 
 	const clearStore = () => {
-		$rootStore = {};
+		invalidateAll();
 	};
 </script>
 
-<div class="flex bg-slate-800 px-4 py-2 justify-between">
-	<div class="flex gap-4">
-		<NavItem href="/" isActive={pageRoute === '/'}>Home</NavItem>
-		{#if $rootStore.username}
-			<NavItem href="/bills" isActive={Boolean(pageRoute?.includes('/bills'))}>Bills</NavItem>
-			<NavItem href="/user" isActive={Boolean(pageRoute?.includes('/user'))}>User</NavItem>
-		{/if}
-	</div>
-	<div class="nav-group-2">
-		{#if $rootStore.username}
-			<NavItem onClick={clearStore} href={`/logout${logoutQueryParam}`} preLoadAction="tap"
-				>Logout</NavItem
-			>
-		{:else if $page.route.id === '/login'}
-			<NavItem href="/signup">Sign Up</NavItem>
+<AppShell>
+	<svelte:fragment slot="sidebarLeft">
+		{#if data.isLoggedIn}
+			<AppRail>
+				<AppRailAnchor
+					on:click={clearStore}
+					href={`/logout${logoutQueryParam}`}
+					data-sveltekit-preload-data="tap"
+				>
+					<IconWrapper icon="mdi:logout" />
+					<span>Logout</span>
+				</AppRailAnchor>
+				<AppRailAnchor selected={$page.route.id === '/'} href="/">
+					<IconWrapper icon="mdi-light:home" />
+					<span>Home</span>
+				</AppRailAnchor>
+				<AppRailAnchor selected={$page.route.id?.includes('/bills')} href="/bills/list">
+					<IconWrapper icon="mdi:trending-down" />
+					<span>Bills</span>
+				</AppRailAnchor>
+				<AppRailAnchor selected={$page.route.id === '/user'} href="/user">
+					<IconWrapper icon="mdi:account-circle-outline" />
+					<span>User</span>
+				</AppRailAnchor>
+				<div class="flex justify-center items-center w-20 h-20">
+					<LightSwitch />
+				</div>
+			</AppRail>
 		{:else}
-			<NavItem href="/login">Login</NavItem>
+			<AppRail>
+				<AppRailAnchor selected={$page.route.id === '/login'} href="/login">
+					<IconWrapper icon="mid:login" />
+					<span>Login</span>
+				</AppRailAnchor>
+				<AppRailAnchor selected={$page.route.id === '/signup'} href="/signup">
+					<IconWrapper icon="mdi:account-plus-outline" />
+					<span>Sign Up</span>
+				</AppRailAnchor>
+			</AppRail>
 		{/if}
-	</div>
-</div>
-<slot />
+	</svelte:fragment>
+	<slot />
+	<svelte:fragment slot="pageFooter">Page Footer</svelte:fragment>
+</AppShell>

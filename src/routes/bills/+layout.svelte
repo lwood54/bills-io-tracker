@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import NavItem from '$lib/components/nav/NavItem.svelte';
-	import Icon from '@iconify/svelte';
 	import { goto } from '$app/navigation';
+	import { TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
+	import IconWrapper from '$lib/components/IconWrapper/IconWrapper.svelte';
 	$: pageRoute = $page.route.id;
 
 	const addItem = () => {
@@ -14,38 +14,42 @@
 	};
 </script>
 
-<div class="flex items-center h-16 justify-between bg-slate-600 px-4 py-2 gap-4">
-	<div class="flex">
-		<NavItem href="/bills/logs" isActive={pageRoute === '/bills/logs'}>Spending Logs</NavItem>
-		<NavItem href="/bills/categories" isActive={pageRoute === '/bills/categories'}
-			>Speding Categories</NavItem
-		>
-		<NavItem href="/bills/list" isActive={pageRoute === '/bills/list'}>Bills List</NavItem>
-	</div>
-	{#if pageRoute !== '/bills'}
-		<button class="p-2 add-icon" on:click={addItem}>
-			<Icon
-				class="text-green-400 hover:text-green-600 active:text-green-200 w-full h-full"
-				icon="mdi:plus-circle-outline"
-			/>
-		</button>
-	{/if}
-</div>
-
+<TabGroup
+	justify="justify-center"
+	active="variant-filled-primary"
+	hover="hover:variant-soft-primary"
+	flex="flex-1 lg:flex-none"
+	rounded=""
+	border=""
+	class="bg-surface-100-800-token w-full"
+>
+	<TabAnchor class="w-36" href="/bills/list" selected={$page.url.pathname === '/bills/list'}>
+		<svelte:fragment slot="lead">
+			<IconWrapper icon="mdi:view-list-outline" />
+		</svelte:fragment>
+		<span>Bills</span>
+	</TabAnchor>
+	<TabAnchor
+		class="w-36"
+		href="/bills/categories"
+		selected={$page.url.pathname === '/bills/categories'}
+	>
+		<svelte:fragment slot="lead">
+			<IconWrapper icon="mdi:arrow-decision" />
+		</svelte:fragment>
+		<span>Categories</span>
+	</TabAnchor>
+	<TabAnchor class="w-36" href="/bills/logs" selected={$page.url.pathname === '/bills/logs'}>
+		<svelte:fragment slot="lead">
+			<IconWrapper icon="mdi:clipboard-text" />
+		</svelte:fragment>
+		<span>Logs</span>
+	</TabAnchor>
+	<TabAnchor class="w-36" on:click={addItem}>
+		<svelte:fragment slot="lead">
+			<IconWrapper icon="mdi:plus-circle-outline" />
+		</svelte:fragment>
+		<span>New</span>
+	</TabAnchor>
+</TabGroup>
 <slot />
-
-<style>
-	.add-icon {
-		height: 45px;
-		width: 45px;
-		/* border: 1px solid blue; */
-	}
-
-	@media (min-width: 500px) {
-		.add-icon {
-			height: 65px;
-			width: 65px;
-			/* border: 2px solid green; */
-		}
-	}
-</style>

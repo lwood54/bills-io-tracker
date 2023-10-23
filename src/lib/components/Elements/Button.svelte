@@ -3,21 +3,27 @@
 
 	export let isDisabled: boolean | undefined = false;
 	export let type: undefined | 'button' | 'submit' = 'submit';
-	export let variant: undefined | 'negative' | 'positive' = 'positive';
+	export let variant: undefined | 'negative' | 'secondary' | 'primary' | 'success' = 'primary';
 	export let formName = '';
 	export let icon: string = '';
-	const buttonBase = 'flex relative items-center justify-center rounded w-full px-3 py-1';
-	const negative = 'bg-red-500 hover:bg-red-600 focus:bg-red-800';
-	const positive = 'bg-green-500 hover:bg-green-600 focus:bg-green-800';
-	const variantClass = variant === 'negative' ? negative : positive;
-	const buttonClass = `${buttonBase} ${variantClass}`;
+	const getButtonClass = () => {
+		switch (variant) {
+			case 'negative':
+				return 'btn variant-ghost-error';
+			case 'secondary':
+				return 'btn variant-ghost-secondary';
+			default:
+				return 'btn variant-ghost-primary';
+		}
+	};
 </script>
 
+<!-- NOTE: directly passing on:click, etc allows direct usage with props -->
 <button
 	disabled={isDisabled}
 	form={formName}
 	type={type === 'submit' ? 'submit' : 'button'}
-	class={buttonClass}
+	class={getButtonClass()}
 	on:click
 	on:mouseover
 	on:mouseenter
@@ -25,9 +31,7 @@
 	on:focus
 >
 	{#if icon}
-		<div class="absolute top-1 left-4 stroke-2">
-			<Icon {icon} width="28" height="28" />
-		</div>
+		<Icon {icon} width="28" height="28" />
 	{/if}
-	<slot />
+	<span><slot /></span>
 </button>
