@@ -51,7 +51,7 @@
 		{:else}
 			<AppRail>
 				<AppRailAnchor selected={$page.route.id === '/login'} href="/login">
-					<IconWrapper icon="mid:login" />
+					<IconWrapper icon="mdi:login" />
 					<span>Login</span>
 				</AppRailAnchor>
 				<AppRailAnchor selected={$page.route.id === '/signup'} href="/signup">

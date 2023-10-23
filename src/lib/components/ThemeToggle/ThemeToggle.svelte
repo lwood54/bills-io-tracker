@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { onMount, tick } from 'svelte';
+	import Button from '../Elements/Button.svelte';
 	let colorTheme: string;
 	let colorThemeForm: HTMLFormElement;
 
@@ -85,18 +86,18 @@
 			use:enhance={submitColorTheme}
 			id="color-theme"
 		>
-			<select
-				on:change={async () => {
-					await tick();
-					colorThemeForm.requestSubmit();
-				}}
-				class="select"
-				bind:value={colorTheme}
-			>
-				{#each themes as theme}
-					<option value={theme}>{theme}</option>
-				{/each}
-			</select>
+			<div class="flex flex-col gap-2">
+				<select class="select" bind:value={colorTheme}>
+					{#each themes as theme}
+						<option value={theme}>{theme}</option>
+					{/each}
+				</select>
+				<Button
+					on:click={() => {
+						colorThemeForm.requestSubmit();
+					}}>Save</Button
+				>
+			</div>
 		</form>
 	</div>
 </div>

@@ -15,12 +15,16 @@
 	on:keydown={onClose}
 	class="fixed top-0 left-0 w-full h-full bg-slate-600/75 z-50"
 	id="background"
+	role="button"
+	tabindex="0"
 >
 	<div transition:slide class="flex flex-col justify-center items-center h-full">
 		<div
 			on:click={(e) => e.stopPropagation()}
 			on:keydown={(e) => e.stopPropagation()}
 			class="flex relative flex-col justify-center w-96 bg-slate-800 p-4"
+			role="button"
+			tabindex="0"
 		>
 			<h1 class="w-full text-center text-lg">{title}</h1>
 			<div class="flex absolute top-0 right-0 justify-end w-full">
